@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Auto Typing</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    .output {
+      font-size: 2rem;
+      font-weight: bold;
+      letter-spacing: 5px;
+      margin-top: 20px;
+    }
+    input {
+      font-size: 1rem;
+      padding: 10px;
+      width: 300px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Auto Typing Effect</h1>
+  <input 
+    type="text" 
+    id="inputWord" 
+    placeholder="Type a word and press Enter">
+  <div class="output" id="output"></div>
+
+  <script>
+    // Function to create the auto-typing effect
+    function autoType(word, elementId, delay = 100) {
+      const outputElement = document.getElementById(elementId);
+      let currentIndex = 0; // Index of the current letter in the word
+      let currentLetter = ""; // Current letter being displayed
+      let alphabetIndex = 0; // Index in the alphabet
+      const alphabet = "abcdefghijklmnopqrstuvwxyz";
+
+      function typeLetter() {
+        if (currentIndex < word.length) {
+          if (alphabetIndex < alphabet.length) {
+            currentLetter = alphabet[alphabetIndex];
+            outputElement.textContent =
+              word.slice(0, currentIndex) + currentLetter;
+            alphabetIndex++;
+            setTimeout(typeLetter, delay);
+          } else {
+            currentIndex++;
+            alphabetIndex = 0;
+            setTimeout(typeLetter, delay);
+          }
+        } else {
+          outputElement.textContent = word; // Final display of the word
+        }
+      }
+
+      typeLetter();
+    }
+
+    // Event listener for Enter key on input
+    document.getElementById("inputWord").addEventListener("keypress", (e) => {
+      if (e.key === "Enter") {
+        const word = e.target.value.trim().toLowerCase(); // Get the word and normalize it
+        if (word) {
+          autoType(word, "output", 50); // Start the auto typing effect
+        }
+      }
+    });
+  </script>
+</body>
+</html>
